@@ -39,9 +39,10 @@ class TitleFinderController @Inject()(cc: ControllerComponents, ws: WSClient ) e
 
   def findTitle(url: String) =  Action.async {
     Try(ws.url(url).withRequestTimeout(5000.millis).get().map { response =>
-      val html = response.body.toLowerCase
-      val startIndex = html.indexOf("<title>")
-      val endIndex = html.indexOf("</title>")
+      val html = response.body
+      val lowerCaseHtml = html.toLowerCase()
+      val startIndex = lowerCaseHtml.indexOf("<title>")
+      val endIndex = lowerCaseHtml.indexOf("</title>")
       println(html)
       if ( startIndex != -1 ) {
         val title = html.substring(startIndex + 7, endIndex)
